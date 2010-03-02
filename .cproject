@@ -36,7 +36,7 @@
 <tool id="de.innot.avreclipse.tool.cppcompiler.lib.debug.661592134" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.lib.debug">
 <option id="de.innot.avreclipse.cppcompiler.option.debug.level.84598125" name="Generate Debugging Info" superClass="de.innot.avreclipse.cppcompiler.option.debug.level"/>
 <option id="de.innot.avreclipse.cppcompiler.option.optimize.1861601660" name="Optimization Level" superClass="de.innot.avreclipse.cppcompiler.option.optimize" value="de.innot.avreclipse.cppcompiler.optimize.size" valueType="enumerated"/>
-<option id="de.innot.avreclipse.cppcompiler.option.incpath.763929417" superClass="de.innot.avreclipse.cppcompiler.option.incpath" valueType="includePath">
+<option id="de.innot.avreclipse.cppcompiler.option.incpath.763929417" name="Include Paths (-I)" superClass="de.innot.avreclipse.cppcompiler.option.incpath" valueType="includePath">
 <listOptionValue builtIn="false" value="/usr/avr/include"/>
 </option>
 <inputType id="de.innot.avreclipse.cppcompiler.input.100548575" superClass="de.innot.avreclipse.cppcompiler.input"/>
@@ -786,7 +786,7 @@
 </extensions>
 </storageModule>
 <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-<configuration artifactExtension="a" artifactName="arduinocorelib" buildArtefactType="de.innot.avreclipse.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.staticLib" cleanCommand="rm -rf" description="" id="de.innot.avreclipse.configuration.lib.release.513251155" name="Release" parent="de.innot.avreclipse.configuration.lib.release">
+<configuration artifactExtension="a" artifactName="arduinocore" buildArtefactType="de.innot.avreclipse.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.staticLib" cleanCommand="rm -rf" description="" id="de.innot.avreclipse.configuration.lib.release.513251155" name="Release" parent="de.innot.avreclipse.configuration.lib.release">
 <folderInfo id="de.innot.avreclipse.configuration.lib.release.513251155." name="/" resourcePath="">
 <toolChain id="de.innot.avreclipse.toolchain.winavr.lib.release.402890063" name="AVR-GCC Toolchain" superClass="de.innot.avreclipse.toolchain.winavr.lib.release">
 <option id="de.innot.avreclipse.toolchain.options.toolchain.objdump.lib.release.336672084" name="Generate Extended Listing (Source + generated Assembler)" superClass="de.innot.avreclipse.toolchain.options.toolchain.objdump.lib.release"/>

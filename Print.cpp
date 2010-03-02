@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <avr/pgmspace.h>
 #include "wiring.h"
 
 #include "Print.h"
@@ -107,6 +108,14 @@ void Print::println(char c)
   print(c);
   println();  
 }
+
+void Print::println_P(const char c[]) {
+          for (uint8_t i=0 ; i < strlen_P(c) ; i++){
+            print(pgm_read_byte(c[i]));
+          }
+  println();
+}
+
 
 void Print::println(const char c[])
 {

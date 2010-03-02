@@ -49,6 +49,7 @@ class Print
     void print(double);
     void println(void);
     void println(char);
+    void println_P(const char c[]);
     void println(const char[]);
     void println(uint8_t);
     void println(int);
