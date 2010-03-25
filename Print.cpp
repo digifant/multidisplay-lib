@@ -110,10 +110,10 @@ void Print::println(char c)
 }
 
 void Print::println_P(const char c[]) {
-          for (uint8_t i=0 ; i < strlen_P(c) ; i++){
-            print(pgm_read_byte(c[i]));
-          }
-  println();
+	while ( pgm_read_byte (c) != 0x00 )
+//          for (uint8_t i=0 ; i < strlen_P(c) ; i++){
+		print(pgm_read_byte(c++));
+	println();
 }
 
 
