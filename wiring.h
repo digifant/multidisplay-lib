@@ -19,21 +19,18 @@
   Free Software Foundation, Inc., 59 Temple Place, Suite 330,
   Boston, MA  02111-1307  USA
 
-  $Id: wiring.h 602 2009-06-01 08:32:11Z dmellis $
+  $Id$
 */
 
 #ifndef Wiring_h
 #define Wiring_h
 
 #include <avr/io.h>
+#include <stdlib.h>
 #include "binary.h"
 
 #ifdef __cplusplus
 extern "C"{
-#endif
-
-#ifndef ARDUINO
-#define ARDUINO 16
 #endif
 
 #define HIGH 0x1
@@ -61,11 +58,16 @@ extern "C"{
 #define FALLING 2
 #define RISING 3
 
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+#define INTERNAL1V1 2
+#define INTERNAL2V56 3
+#else
 #define INTERNAL 3
+#endif
 #define DEFAULT 1
 #define EXTERNAL 0
 
-//we`re using stdlin abs!
+//conflicts with abs from avr/math.h!
 // undefine stdlib's abs if encountered
 //#ifdef abs
 //#undef abs
@@ -73,10 +75,11 @@ extern "C"{
 
 #define min(a,b) ((a)<(b)?(a):(b))
 #define max(a,b) ((a)>(b)?(a):(b))
+//conflicts with abs from avr/math.h!
 //#define abs(x) ((x)>0?(x):-(x))
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
 //conflicts with round macro from avr/math.h!
-#define roundA(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
+//#define round(x)     ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 #define radians(deg) ((deg)*DEG_TO_RAD)
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
@@ -112,19 +115,14 @@ int analogRead(uint8_t);
 void analogReference(uint8_t mode);
 void analogWrite(uint8_t, int);
 
-void beginSerial(long);
-void serialWrite(unsigned char);
-int serialAvailable(void);
-int serialRead(void);
-void serialFlush(void);
-
 unsigned long millis(void);
 unsigned long micros(void);
 void delay(unsigned long);
 void delayMicroseconds(unsigned int us);
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
 
-void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, byte val);
+void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
+uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
 
 void attachInterrupt(uint8_t, void (*)(void), int mode);
 void detachInterrupt(uint8_t);
