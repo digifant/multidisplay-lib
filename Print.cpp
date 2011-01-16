@@ -19,13 +19,13 @@
  Modified 23 November 2006 by David A. Mellis
  */
 
+#include <avr/pgmspace.h>
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 #include "wiring.h"
-
-#include <avr/pgmspace.h>
 
 #include "Print.h"
 
@@ -222,8 +222,10 @@ void Print::printFloat(double number, uint8_t digits)
 }
 
 void Print::println_P(const char c[]) {
-	while ( pgm_read_byte (c) != 0x00 )
+        while ( pgm_read_byte (c) != 0x00 )
 //          for (uint8_t i=0 ; i < strlen_P(c) ; i++){
-		print(pgm_read_byte(c++));
-	println();
+                print(pgm_read_byte(c++));
+        println();
 }
+
+

@@ -51,7 +51,6 @@ class Print
     void print(unsigned long, int = DEC);
     void print(double, int = 2);
 
-
     void println(const String &s);
     void println(const char[]);
     void println(char, int = BYTE);
