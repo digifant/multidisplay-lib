@@ -139,8 +139,12 @@ inline void store_char(unsigned char c, ring_buffer *rx_buffer)
   //SIGNAL(SIG_USART1_RECV)
   SIGNAL(USART1_RX_vect)
   {
-    unsigned char c = UDR1;
-    store_char(c, &rx_buffer1);
+	  if ( UCSR1A & 28 )
+		  unsigned char c = UDR1;
+	  else {
+		  unsigned char c = UDR1;
+		  store_char(c, &rx_buffer1);
+	  }
   }
 #elif defined(SIG_USART1_RECV)
   #error SIG_USART1_RECV
@@ -205,12 +209,23 @@ void HardwareSerial::begin(long baud)
   }
 #endif
   
-  if (use_u2x) {
-    *_ucsra = 1 << _u2x;
-    baud_setting = (F_CPU / 4 / baud - 1) / 2;
-  } else {
-    *_ucsra = 0;
-    baud_setting = (F_CPU / 8 / baud - 1) / 2;
+  switch ( baud ) {
+  case 6666:
+  	  	  baud_setting = 63; //31250 baud
+  	  	  *_ucsra = 1 << _u2x;
+  	  	  break;
+  case 6667:
+  	  	  baud_setting = 31; //62500 baud
+  	  	  *_ucsra = 1 << _u2x;
+  	  	  break;
+  default:
+  		  if (use_u2x) {
+  			  *_ucsra = 1 << _u2x;
+  			  baud_setting = (F_CPU / 4 / baud - 1) / 2;
+  		  } else {
+  			  *_ucsra = 0;
+  			  baud_setting = (F_CPU / 8 / baud - 1) / 2;
+  		  }
   }
 
   // assign the baud_setting, a.k.a. ubbr (USART Baud Rate Register)
