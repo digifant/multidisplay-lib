@@ -37,11 +37,16 @@
 // using a ring buffer (I think), in which rx_buffer_head is the index of the
 // location to which to write the next incoming character and rx_buffer_tail
 // is the index of the location from which to read.
-#if (RAMEND < 1000)
-  #define RX_BUFFER_SIZE 32
+#if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
+	#define RX_BUFFER_SIZE 64
 #else
-  #define RX_BUFFER_SIZE 128
+	#define RX_BUFFER_SIZE 32
 #endif
+//#if (RAMEND < 1000)
+//  #define RX_BUFFER_SIZE 32
+//#else
+//  #define RX_BUFFER_SIZE 128
+//#endif
 
 struct ring_buffer
 {
