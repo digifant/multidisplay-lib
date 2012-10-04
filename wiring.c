@@ -234,6 +234,15 @@ void init()
 	// note, however, that fast pwm mode can achieve a frequency of up
 	// 8 MHz (with a 16 MHz clock) at 50% duty cycle
 
+//    TCCR1B = 0;
+//
+//    // set timer 1 prescale factor to 64
+//    sbi(TCCR1B, CS11);
+//    sbi(TCCR1B, CS10);
+//    // put timer 1 in 8-bit phase correct pwm mode
+//    sbi(TCCR1A, WGM10);
+
+
 #if defined(TCCR1B) && defined(CS11) && defined(CS10)
 	TCCR1B = 0;
 
