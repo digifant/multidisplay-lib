@@ -7,3 +7,4 @@ avrtarget/UseEEPROM=false
 avrtarget/UseExtendedRAMforHeap=true
 avrtarget/perConfig=false
 eclipse.preferences.version=1
+>>>>>>> .r446
