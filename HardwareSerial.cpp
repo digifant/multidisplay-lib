@@ -39,7 +39,7 @@
 // location from which to read.
 // bofh: custom ringbuffer size
 #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
-	#define SERIAL_BUFFER_SIZE 64
+	#define SERIAL_BUFFER_SIZE 128
 #else
 	#define SERIAL_BUFFER_SIZE 32
 #endif
