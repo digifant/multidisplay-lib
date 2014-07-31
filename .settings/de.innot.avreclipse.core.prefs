@@ -1,4 +1,4 @@
-#Sat Jan 28 17:18:43 CET 2012
+>>>>>>>=.r446
 avrtarget/ClockFrequency=16000000
 avrtarget/ExtRAMSize=0
 avrtarget/ExtendedRAM=false
@@ -7,4 +7,3 @@ avrtarget/UseEEPROM=false
 avrtarget/UseExtendedRAMforHeap=true
 avrtarget/perConfig=false
 eclipse.preferences.version=1
->>>>>>> .r446
