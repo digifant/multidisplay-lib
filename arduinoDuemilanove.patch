@@ -1,0 +1,208 @@
+diff -ruN arduino-1.0.1.orig/hardware/arduino/cores/arduino/HardwareSerial.cpp arduino-1.0.1/hardware/arduino/cores/arduino/HardwareSerial.cpp
+--- arduino-1.0.1.orig/hardware/arduino/cores/arduino/HardwareSerial.cpp	2012-05-21 13:01:43.000000000 -0400
++++ arduino-1.0.1/hardware/arduino/cores/arduino/HardwareSerial.cpp	2012-10-19 23:26:46.000000000 -0400
+@@ -88,24 +88,16 @@
+ #if !defined(USART0_RX_vect) && defined(USART1_RX_vect)
+ // do nothing - on the 32u4 the first USART is USART1
+ #else
+-#if !defined(USART_RX_vect) && !defined(SIG_USART0_RECV) && \
+-    !defined(SIG_UART0_RECV) && !defined(USART0_RX_vect) && \
+-	!defined(SIG_UART_RECV)
++#if !defined(USART_RX_vect) && !defined(USART0_RX_vect)
+   #error "Don't know what the Data Received vector is called for the first UART"
+ #else
+   void serialEvent() __attribute__((weak));
+   void serialEvent() {}
+   #define serialEvent_implemented
+ #if defined(USART_RX_vect)
+-  SIGNAL(USART_RX_vect)
+-#elif defined(SIG_USART0_RECV)
+-  SIGNAL(SIG_USART0_RECV)
+-#elif defined(SIG_UART0_RECV)
+-  SIGNAL(SIG_UART0_RECV)
++  ISR(USART_RX_vect)
+ #elif defined(USART0_RX_vect)
+-  SIGNAL(USART0_RX_vect)
+-#elif defined(SIG_UART_RECV)
+-  SIGNAL(SIG_UART_RECV)
++  ISR(USART0_RX_vect)
+ #endif
+   {
+   #if defined(UDR0)
+@@ -124,39 +116,33 @@
+   void serialEvent1() __attribute__((weak));
+   void serialEvent1() {}
+   #define serialEvent1_implemented
+-  SIGNAL(USART1_RX_vect)
++  ISR(USART1_RX_vect)
+   {
+     unsigned char c = UDR1;
+     store_char(c, &rx_buffer1);
+   }
+-#elif defined(SIG_USART1_RECV)
+-  #error SIG_USART1_RECV
+ #endif
+ 
+ #if defined(USART2_RX_vect) && defined(UDR2)
+   void serialEvent2() __attribute__((weak));
+   void serialEvent2() {}
+   #define serialEvent2_implemented
+-  SIGNAL(USART2_RX_vect)
++  ISR(USART2_RX_vect)
+   {
+     unsigned char c = UDR2;
+     store_char(c, &rx_buffer2);
+   }
+-#elif defined(SIG_USART2_RECV)
+-  #error SIG_USART2_RECV
+ #endif
+ 
+ #if defined(USART3_RX_vect) && defined(UDR3)
+   void serialEvent3() __attribute__((weak));
+   void serialEvent3() {}
+   #define serialEvent3_implemented
+-  SIGNAL(USART3_RX_vect)
++  ISR(USART3_RX_vect)
+   {
+     unsigned char c = UDR3;
+     store_char(c, &rx_buffer3);
+   }
+-#elif defined(SIG_USART3_RECV)
+-  #error SIG_USART3_RECV
+ #endif
+ 
+ void serialEventRun(void)
+diff -ruN arduino-1.0.1.orig/hardware/arduino/cores/arduino/HardwareSerial.h arduino-1.0.1/hardware/arduino/cores/arduino/HardwareSerial.h
+--- arduino-1.0.1.orig/hardware/arduino/cores/arduino/HardwareSerial.h	2012-05-21 13:01:43.000000000 -0400
++++ arduino-1.0.1/hardware/arduino/cores/arduino/HardwareSerial.h	2012-10-19 23:13:59.000000000 -0400
+@@ -84,6 +84,15 @@
+   extern HardwareSerial Serial3;
+ #endif
+ 
++/*
++ * on ATmega8, the uart and its bits are not numbered, so there is no "TXC0"
++ * definition.  It is slightly cleaner to define this here instead of having
++ * conditional code in the cpp module.
++ */
++#if !defined(TXC0)
++#define TXC0 TXC
++#endif
++
+
+ 
+ #endif
+diff -ruN arduino-1.0.1.orig/hardware/arduino/cores/arduino/WInterrupts.c arduino-1.0.1/hardware/arduino/cores/arduino/WInterrupts.c
+--- arduino-1.0.1.orig/hardware/arduino/cores/arduino/WInterrupts.c	2012-05-21 13:01:43.000000000 -0400
++++ arduino-1.0.1/hardware/arduino/cores/arduino/WInterrupts.c	2012-10-19 23:13:59.000000000 -0400
+@@ -216,72 +216,72 @@
+ */
+ 
+ #if defined(__AVR_ATmega32U4__)
+-SIGNAL(INT0_vect) {
++ISR(INT0_vect) {
+ 	if(intFunc[EXTERNAL_INT_0])
+ 		intFunc[EXTERNAL_INT_0]();
+ }
+ 
+-SIGNAL(INT1_vect) {
++ISR(INT1_vect) {
+ 	if(intFunc[EXTERNAL_INT_1])
+ 		intFunc[EXTERNAL_INT_1]();
+ }
+ 
+ #elif defined(EICRA) && defined(EICRB)
+ 
+-SIGNAL(INT0_vect) {
++ISR(INT0_vect) {
+   if(intFunc[EXTERNAL_INT_2])
+     intFunc[EXTERNAL_INT_2]();
+ }
+ 
+-SIGNAL(INT1_vect) {
++ISR(INT1_vect) {
+   if(intFunc[EXTERNAL_INT_3])
+     intFunc[EXTERNAL_INT_3]();
+ }
+ 
+-SIGNAL(INT2_vect) {
++ISR(INT2_vect) {
+   if(intFunc[EXTERNAL_INT_4])
+     intFunc[EXTERNAL_INT_4]();
+ }
+ 
+-SIGNAL(INT3_vect) {
++ISR(INT3_vect) {
+   if(intFunc[EXTERNAL_INT_5])
+     intFunc[EXTERNAL_INT_5]();
+ }
+ 
+-SIGNAL(INT4_vect) {
++ISR(INT4_vect) {
+   if(intFunc[EXTERNAL_INT_0])
+     intFunc[EXTERNAL_INT_0]();
+ }
+ 
+-SIGNAL(INT5_vect) {
++ISR(INT5_vect) {
+   if(intFunc[EXTERNAL_INT_1])
+     intFunc[EXTERNAL_INT_1]();
+ }
+ 
+-SIGNAL(INT6_vect) {
++ISR(INT6_vect) {
+   if(intFunc[EXTERNAL_INT_6])
+     intFunc[EXTERNAL_INT_6]();
+ }
+ 
+-SIGNAL(INT7_vect) {
++ISR(INT7_vect) {
+   if(intFunc[EXTERNAL_INT_7])
+     intFunc[EXTERNAL_INT_7]();
+ }
+ 
+ #else
+ 
+-SIGNAL(INT0_vect) {
++ISR(INT0_vect) {
+   if(intFunc[EXTERNAL_INT_0])
+     intFunc[EXTERNAL_INT_0]();
+ }
+ 
+-SIGNAL(INT1_vect) {
++ISR(INT1_vect) {
+   if(intFunc[EXTERNAL_INT_1])
+     intFunc[EXTERNAL_INT_1]();
+ }
+ 
+ #if defined(EICRA) && defined(ISC20)
+-SIGNAL(INT2_vect) {
++ISR(INT2_vect) {
+   if(intFunc[EXTERNAL_INT_2])
+     intFunc[EXTERNAL_INT_2]();
+ }
+@@ -290,9 +290,8 @@
+ #endif
+ 
+ /*
+-SIGNAL(SIG_2WIRE_SERIAL) {
++ISR(TWI_vect) {
+   if(twiIntFunc)
+     twiIntFunc();
+ }
+ */
+-
+diff -ruN arduino-1.0.1.orig/hardware/arduino/cores/arduino/wiring.c arduino-1.0.1/hardware/arduino/cores/arduino/wiring.c
+--- arduino-1.0.1.orig/hardware/arduino/cores/arduino/wiring.c	2012-05-21 13:01:43.000000000 -0400
++++ arduino-1.0.1/hardware/arduino/cores/arduino/wiring.c	2012-10-19 23:13:59.000000000 -0400
+@@ -42,9 +42,9 @@
+ static unsigned char timer0_fract = 0;
+ 
+ #if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
+-SIGNAL(TIM0_OVF_vect)
++ISR(TIM0_OVF_vect)
+ #else
+-SIGNAL(TIMER0_OVF_vect)
++ISR(TIMER0_OVF_vect)
+ #endif
+ {
+ 	// copy these to local variables so they can be stored in registers
